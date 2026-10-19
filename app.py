@@ -112,9 +112,8 @@ TERRITORY_DIRECTORY = {
 
 st.set_page_config(page_title="Gestión de casos", page_icon="📋", layout="wide")
 
-# Contraseña de acceso: se guarda únicamente el hash, nunca la clave en texto.
-APP_PASSWORD_SALT = "d99d775f92b1f45f218d678b85344eda"
-APP_PASSWORD_HASH = "88503b10308cbc64bb8b786e1601f77b22375a1cf2846a7ba5ee08d6084c8cda"
+# Contraseña sencilla en texto plano
+APP_PASSWORD = "123"
 
 
 def require_password() -> bool:
@@ -128,10 +127,7 @@ def require_password() -> bool:
         submitted = st.form_submit_button("Ingresar", use_container_width=True)
 
     if submitted:
-        candidate_hash = hashlib.sha256(
-            f"{APP_PASSWORD_SALT}:{password}".encode("utf-8")
-        ).hexdigest()
-        if hmac.compare_digest(candidate_hash, APP_PASSWORD_HASH):
+        if password == APP_PASSWORD:
             st.session_state["authenticated"] = True
             st.rerun()
         else:
